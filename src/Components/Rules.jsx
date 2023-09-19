@@ -12,7 +12,7 @@ export default function Rules() {
             <div className="problem-div">
                 <div className="problem-body">
                     <p className="content">
-                        <b>Our problem</b> is set in the planet of Lengaburu…in the distant
+                        <b>Our problem</b> is set in the planet of Lengaburu- <br />in the distant
                         distant galaxy of Tara B. After the recent war with neighbouring
                         planet Falicornia, King Shan has exiled the Queen of Falicornia
                         for 15 years.
@@ -39,7 +39,7 @@ export default function Rules() {
                 Now in the game, for each vehicle, select one planet
                 according to the description given. Remember, you can choose
                 only 1 planet with 1 vehicle. The moment you pick a planet,
-                your ship will be launched. So remember- no backsies!
+                your ship will be launched. No backsies allowed!
             </p>
             <h3 className="rule msg"> "May the force be with you."</h3>
             <button className="start"

@@ -1,0 +1,8 @@
+{
+    "venus": "../assets/venus.png",
+    "saturn": "../assets/saturn.png",
+    "mars": "../assets/mars.png",
+    "mercury": "../assets/mercury.png",
+    "earth": "../assets/earth.png",
+    "neptune": "../assets/neptune.png"
+}

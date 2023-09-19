@@ -4,7 +4,7 @@ body {
 }
 
 main {
-  padding: 1rem;
+  padding: 1rem 3rem;
 }
 
 .title {
@@ -12,28 +12,29 @@ main {
   text-align: center;
   letter-spacing: 2px;
   color: #f29018;
+  font-size: 2.5rem;
 }
 
 .problem-div {
   display: flex;
-  justify-content: center;
+  justify-content: space-evenly;
   align-items: center;
   height: max-content;
   gap: 1rem;
 }
 
 .problem-body {
-  width: 60%;
-  max-width: 700px;
+  width: 75%;
+  max-width: 900px;
 }
 
 .content {
-  line-height: 1.95rem;
+  line-height: 2.25rem;
   font-size: 1.25rem;
 }
 
 .king {
-  height: 180px;
+  max-height: 280px;
   width: height;
   border-radius: 50%;
   background-color: rgba(255, 137, 19, 0.2);
@@ -43,12 +44,13 @@ main {
 .h3 {
   text-align: center;
   font-size: 1.75rem;
-  line-height: 2.5rem;
-  color: #fff;
+  line-height: 3.5rem;
+  color: #eae9e9;
   background-color: #242424;
   padding: 1rem;
   margin-top: 2rem;
   margin-bottom: 2rem;
+  letter-spacing: 3px;
 }
 
 .gameplay-img {
@@ -56,19 +58,13 @@ main {
   width: 100%;
 }
 
-.rule {
-  font-weight: 700;
-  font-size: 1.5rem;
-  text-align: center;
-  color: rgb(36, 36, 36);
-  letter-spacing: 2px;
-  line-height: 2rem;
-  max-width: 700px;
-  margin: 2rem auto;
-}
+
 
 .msg {
   color: #f29018;
+  text-align: center;
+  font-size: 1.5rem;
+  font-weight: 500;
 }
 
 .start {
@@ -91,6 +87,7 @@ main {
   text-align: center;
   max-width: 700px;
   margin: 2rem auto;
+  font-weight: 700;
 }
 
 .start:hover {
@@ -98,7 +95,7 @@ main {
   ;
 }
 
-@media(max-width: 600px) {
+@media(max-width: 800px) {
   .problem-div {
     display: flex;
     flex-direction: column;
@@ -106,5 +103,17 @@ main {
 
   .problem-body {
     width: 95%;
+  }
+
+  .title {
+    font-size: 1.75rem;
+  }
+
+  main {
+    padding: 1rem 0rem;
+  }
+
+  .king {
+    height: 180px;
   }
 }
