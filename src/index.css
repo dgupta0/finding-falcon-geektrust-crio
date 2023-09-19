@@ -1,5 +1,5 @@
 body {
-  color: #242424;
+  color: rgb(36, 36, 36);
   font-family: Raleway !important;
 }
 
@@ -92,8 +92,46 @@ main {
 
 .start:hover {
   background-color: rgba(36, 36, 36, 0.95);
+
+}
+
+.planet-img {
+  height: 150px;
+  width: 150px;
+  margin: auto;
+  display: flex;
+  justify-content: center;
+}
+
+.planet-info-container {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  margin: auto;
+  margin-top: 0.5rem;
+  width: max-content;
+  border-radius: 5px;
+
+  padding: 0.2rem 2rem;
+  background-color: rgba(36, 36, 36, 0.05);
   ;
 }
+
+.planet-name,
+.planet-info {
+  text-align: center;
+  margin: 0;
+
+}
+
+.planet-name {
+  font-weight: 700;
+  font-size: larger;
+}
+
+
+
 
 @media(max-width: 800px) {
   .problem-div {

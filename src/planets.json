@@ -1,8 +1,26 @@
-{
-    "venus": "../assets/venus.png",
-    "saturn": "../assets/saturn.png",
-    "mars": "../assets/mars.png",
-    "mercury": "../assets/mercury.png",
-    "earth": "../assets/earth.png",
-    "neptune": "../assets/neptune.png"
-}
+[
+    {
+        "name": "venus",
+        "path": "../assets/venus.png"
+    },
+    {
+        "name": "saturn",
+        "path": "../assets/saturn.png"
+    },
+    {
+        "name": "mars",
+        "path": "../assets/mars.png"
+    },
+    {
+        "name": "mercury",
+        "path": "../assets/mercury.png"
+    },
+    {
+        "name": "earth",
+        "path": "../assets/earth.png"
+    },
+    {
+        "name": "neptune",
+        "path": "../assets/neptune.png"
+    }
+]

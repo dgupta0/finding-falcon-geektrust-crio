@@ -1,20 +1,21 @@
 import { useEffect, useState } from "react"
 import axios from "axios";
 import { Grid, Card } from "@mui/material";
-import planets from "../planets.json"
-import vehicles from "../vehicles.json"
+// import planetsArr from "../planets.json"
+// import vehiclesArr from "../vehicles.json"
+import { planetsArr, vehiclesArr } from "../images"
 // import venus from "../assets/venus.png"
 // import saturn from "../assets/saturn.png"
 // import mars from "../assets/mars.png"
 // import mercury from "../assets/mercury.png"
 // import earth from "../assets/earth.png"
-// import neptune from "../assets/neptune.png"
+//import neptune from "../assets/neptune.png"
 // import rocket from "../assets/rocket.png"
 // import plane from "../assets/plane.png"
 // import ship from "../assets/ship.png"
 // import ufo from "../assets/ufo.png"
-console.log("data", vehicles);
-console.log("data", planets)
+// console.log("data", vehiclesArr);
+// console.log("data", planetsArr)
 
 export default function Game() {
     const [planets, setPlanets] = useState([]);
@@ -46,8 +47,7 @@ export default function Game() {
             const res = await axios.get("https://findfalcone.geektrust.com/planets");
             if (res.status === 200) {
                 const data = res.data;
-                console.log(data)
-                setPlanets(data)
+                return data;
             } else {
                 console.log("res not 200, cant get planets data")
             }
@@ -62,10 +62,9 @@ export default function Game() {
             const res = await axios.get("https://findfalcone.geektrust.com/vehicles");
             if (res.status === 200) {
                 const data = res.data;
-                console.log(data)
                 return data
             } else {
-                console.log("res not 200, cant get planets data")
+                console.log("res not 200, cant get vehicles data")
                 return
             }
 
@@ -77,28 +76,68 @@ export default function Game() {
 
 
     useEffect(() => {
-        const tokenFromLocalStorage = localStorage.getItem("token")
-        console.log(localStorage.getItem("token"));
-        if (tokenFromLocalStorage) {
-            setToken(tokenFromLocalStorage)
-        }
-        else {
-            const tokenFroAPI = getToken();
-            setToken(tokenFroAPI)
-        }
+        async function assembleData() {
+            const tokenFromLocalStorage = localStorage.getItem("token")
+            console.log(localStorage.getItem("token"));
+            if (tokenFromLocalStorage) {
+                setToken(tokenFromLocalStorage)
+            }
+            else {
+                const tokenFroAPI = await getToken();
+                setToken(tokenFroAPI)
+            }
 
-        const planetsData = getPlanets();
-        getVehicles()
+            // combining pics planets image data with vehicles data api
+            const planetsData = await getPlanets();
+            const combinedPlanetsData = planetsData.map((planet, i) => {
+                return (
+                    {
+                        ...planet, id: `planet${i}`,
+                        path: planetsArr[i].path
+                    }
+                )
+            })
+            setPlanets(combinedPlanetsData)
+
+            // combining pics vehicle image data with vehicles data api
+            const vehiclesData = await getVehicles()
+            const combinedVehiclesData = vehiclesData.map((vehicle, i) => {
+                return (
+                    {
+                        ...vehicle, id: `vehicle${i}`,
+                        path: vehiclesArr[i].path
+                    }
+                )
+            })
+            setVehicles(combinedVehiclesData)
+        }
+        assembleData()
+
     }, [])
+    const GameUI = planets.map(planet => {
+        return (
+            <Grid item xs={12} sm={6} md={4}>
+                <img src={planet.path} className="planet-img" alt="image-from-freepik" />
+                <div className="planet-info-container">
+                    <h4 className="planet-name">
+                        {planet.name}
+                    </h4>
+                    <p className="planet-info">Distance-{planet.distance}m </p>
+
+                </div>
+            </Grid>
+        )
+    })
 
     return (
         <>
             <h1 className="title">
                 Finding Falcone
             </h1>
-            <main>
+            <main className="game-main">
                 <h3 style={{ textAlign: "center" }}>Select 4 planets to send Vehicles</h3>
-                <Grid container spacing={2}>
+                <Grid container spacing={2} mt={6}>
+                    {...GameUI}
                 </Grid>
             </main>
         </>
