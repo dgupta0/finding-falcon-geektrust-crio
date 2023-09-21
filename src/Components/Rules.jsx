@@ -1,4 +1,4 @@
-import { Typography } from "@mui/material"
+
 import queen from "../assets/falcone.png";
 import gameplay from "../assets/game.jpeg"
 import { useNavigate } from "react-router-dom";
@@ -41,7 +41,7 @@ export default function Rules() {
                 only 1 planet with 1 vehicle. The moment you pick a planet,
                 your ship will be launched. No backsies allowed!
             </p>
-            <h3 className="rule msg"> "May the force be with you."</h3>
+            <h3 className="rule msg"> May the force be with you.</h3>
             <button className="start"
                 onClick={() => navigate("/game")}
             >Start</button>

@@ -112,10 +112,8 @@ main {
   margin-top: 0.5rem;
   width: max-content;
   border-radius: 5px;
-
   padding: 0.2rem 2rem;
   background-color: rgba(36, 36, 36, 0.05);
-  ;
 }
 
 .planet-name,

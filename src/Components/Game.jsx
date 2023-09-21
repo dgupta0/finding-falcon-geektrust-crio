@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react"
 import axios from "axios";
-import { Grid, Card } from "@mui/material";
+import { Grid } from "@mui/material";
 // import planetsArr from "../planets.json"
 // import vehiclesArr from "../vehicles.json"
 import { planetsArr, vehiclesArr } from "../images"
@@ -73,18 +73,16 @@ export default function Game() {
             return
         }
     }
-
+ console.log(vehicles)
 
     useEffect(() => {
         async function assembleData() {
-            const tokenFromLocalStorage = localStorage.getItem("token")
+            const tokenFromLocalStorage = localStorage.getItem("token") || ""
+            setToken(tokenFromLocalStorage)
             console.log(localStorage.getItem("token"));
-            if (tokenFromLocalStorage) {
-                setToken(tokenFromLocalStorage)
-            }
-            else {
-                const tokenFroAPI = await getToken();
-                setToken(tokenFroAPI)
+            if (!token) {
+                const tokenFromAPI = await getToken();
+                setToken(tokenFromAPI)
             }
 
             // combining pics planets image data with vehicles data api
@@ -116,16 +114,17 @@ export default function Game() {
     }, [])
     const GameUI = planets.map(planet => {
         return (
-            <Grid item xs={12} sm={6} md={4}>
+            <>
+            <Grid item xs={12} sm={6} md={4} p={2}>
                 <img src={planet.path} className="planet-img" alt="image-from-freepik" />
                 <div className="planet-info-container">
                     <h4 className="planet-name">
                         {planet.name}
                     </h4>
                     <p className="planet-info">Distance-{planet.distance}m </p>
-
                 </div>
             </Grid>
+            </>
         )
     })
 
@@ -136,8 +135,8 @@ export default function Game() {
             </h1>
             <main className="game-main">
                 <h3 style={{ textAlign: "center" }}>Select 4 planets to send Vehicles</h3>
-                <Grid container spacing={2} mt={6}>
-                    {...GameUI}
+                <Grid container spacing={2} mt={6} >
+                 {GameUI}   
                 </Grid>
             </main>
         </>

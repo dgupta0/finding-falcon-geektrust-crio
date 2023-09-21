@@ -1,7 +1,6 @@
-import React from 'react';
 import { Routes, Route } from 'react-router-dom';
-import Game from "./Components/game"
-import Rules from "./Components/rules"
+import Game from "./Components/Game"
+import Rules from "./Components/Rules"
 
 function App() {
   return (
