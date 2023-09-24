@@ -1,6 +1,8 @@
 import { useEffect, useState } from "react"
 import axios from "axios";
 import { Grid } from "@mui/material";
+import PropTypes from 'prop-types';
+
 // import planetsArr from "../planets.json"
 // import vehiclesArr from "../vehicles.json"
 import { planetsArr, vehiclesArr } from "../images"
@@ -91,7 +93,8 @@ export default function Game() {
                 return (
                     {
                         ...planet, id: `planet${i}`,
-                        path: planetsArr[i].path
+                        path: planetsArr[i].path,
+                        isClicked: false
                     }
                 )
             })
@@ -103,30 +106,15 @@ export default function Game() {
                 return (
                     {
                         ...vehicle, id: `vehicle${i}`,
-                        path: vehiclesArr[i].path
+                        path: vehiclesArr[i].path,
+                        isClicked: false
                     }
                 )
             })
             setVehicles(combinedVehiclesData)
         }
         assembleData()
-
-    }, [])
-    const GameUI = planets.map(planet => {
-        return (
-            <>
-            <Grid item xs={12} sm={6} md={4} p={2}>
-                <img src={planet.path} className="planet-img" alt="image-from-freepik" />
-                <div className="planet-info-container">
-                    <h4 className="planet-name">
-                        {planet.name}
-                    </h4>
-                    <p className="planet-info">Distance-{planet.distance}m </p>
-                </div>
-            </Grid>
-            </>
-        )
-    })
+    }, [token])
 
     return (
         <>
@@ -136,9 +124,68 @@ export default function Game() {
             <main className="game-main">
                 <h3 style={{ textAlign: "center" }}>Select 4 planets to send Vehicles</h3>
                 <Grid container spacing={2} mt={6} >
-                 {GameUI}   
+                 <GameUI 
+                 planets={planets} setPlanets={setPlanets} 
+                 vehicles={vehicles} setVehicles={setVehicles}/> 
                 </Grid>
             </main>
         </>
     )
+}
+
+function GameUI({planets, setPlanets, vehicles}){
+    GameUI.propTypes = {
+        planets: PropTypes.array.isRequired,
+        setPlanets: PropTypes.func.isRequired,
+        vehicles: PropTypes.array.isRequired,
+      };
+
+    function handlePlanetClick(id) {
+        setPlanets((prev) => {
+          return prev.map((p) => {
+            if (p.id === id) {
+              return { ...p, isClicked: !p.isClicked };
+            } else {
+              return p;
+            }
+          });
+        });
+      }
+      function handleShipClick(p_id, v_id){
+        console.log(p_id, v_id)
+      }
+    
+      return (
+        <>
+          {planets.map((planet) => (
+            <Grid item xs={12} sm={6} md={4} p={2} className="main-container" key={planet.id}>
+              <div className="planet-container" onClick={() => handlePlanetClick(planet.id)}>
+                <img src={planet.path} className="planet-img" alt="image-from-freepik" />
+                <div className="planet-info-container">
+                  <h4 className="planet-name">{planet.name}</h4>
+                  <p className="planet-info">Distance-{planet.distance}m</p>
+                </div>
+              </div>
+              {planet.isClicked && (
+                <div className="all-v-div">
+                  {vehicles.map((v) => (
+                    <div className="v-div" key={v.id} 
+                    onClick={()=>handleShipClick(v.id, planet.id)}>
+                      <img src={v.path} className="v-img" alt="image-from-freepik" />
+                      <div className="v-info-container">
+                        <h4 className="v-name">{v.name}</h4>
+                        <p className="v-info">
+                          Max-Distance= {v.max_distance}m<br />
+                          Units= {v.total_no} <br />
+                          speed= {v.speed}m/h
+                        </p>
+                      </div>
+                    </div>
+                  ))}
+                </div>
+              )}
+            </Grid>
+          ))}
+        </>
+      );
 }

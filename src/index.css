@@ -58,8 +58,6 @@ main {
   width: 100%;
 }
 
-
-
 .msg {
   color: #f29018;
   text-align: center;
@@ -94,33 +92,51 @@ main {
   background-color: rgba(36, 36, 36, 0.95);
 
 }
+.main-container{
+  width: 100%
+}
+.planet-container{
+  padding: 1rem;
+  margin-bottom: 1rem;
+  position: relative; 
+}
+
+.planet-container:hover{
+  border:  3px solid rgba(0, 0, 0, 0.1);  
+}
 
 .planet-img {
-  height: 150px;
-  width: 150px;
+  height: 180px;
+  max-width: 100%;
   margin: auto;
   display: flex;
-  justify-content: center;
+  justify-content: center; 
+ 
 }
 
 .planet-info-container {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
   display: flex;
+  align-self: center;
   flex-direction: column;
   justify-content: center;
   align-items: center;
   margin: auto;
   margin-top: 0.5rem;
-  width: max-content;
   border-radius: 5px;
-  padding: 0.2rem 2rem;
-  background-color: rgba(36, 36, 36, 0.05);
+  padding: 0.2rem 2rem; 
+  color: #ffffff;
+  font-size: larger;
 }
 
 .planet-name,
 .planet-info {
   text-align: center;
   margin: 0;
-
 }
 
 .planet-name {
@@ -128,7 +144,46 @@ main {
   font-size: larger;
 }
 
+.all-v-div{
+ width: inherit;
+ display: grid;
+ grid-template-columns: repeat(2, 1fr);
+ gap: 0.5rem;
+}
 
+.v-div{
+ 
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  width: 100%; 
+}
+.v-div:hover{
+  border: 1px solid rgb(94, 86, 94);
+
+}
+
+.v-img{
+  height: 55px;
+  margin-bottom: 0;
+  padding-top: 0.1rem;
+}
+.v-name,
+.v-info {
+  text-align: center;
+  margin: 0.25rem;
+
+}
+.v-info{
+  background-color: #f9f6f3;
+  border-radius: 10px;
+  padding: 0.75rem;
+  letter-spacing: 0.1rem;
+  line-height: 1.3rem;
+  
+}
 
 
 @media(max-width: 800px) {
