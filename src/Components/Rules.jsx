@@ -1,14 +1,11 @@
 
 import queen from "../assets/falcone.png";
-import gameplay from "../assets/game.jpeg"
+import gameplay from "../assets/game.png"
 import { useNavigate } from "react-router-dom";
 export default function Rules() {
     const navigate = useNavigate()
     return (
         <main>
-            <h1 className="title">
-                Finding Falcone
-            </h1>
             <div className="problem-div">
                 <div className="problem-body">
                     <p className="content">
@@ -36,7 +33,7 @@ export default function Rules() {
                 <img className="gameplay-img" src={gameplay} alt="pic from geektrust" />
             </div>
             <p className="content content-rule">
-                Now in the game, for each vehicle, select one planet
+                Now in the game, for each planet, select one vehicle
                 according to the description given. Remember, you can choose
                 only 1 planet with 1 vehicle. The moment you pick a planet,
                 your ship will be launched. No backsies allowed!

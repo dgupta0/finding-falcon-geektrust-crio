@@ -2,6 +2,8 @@ import { useEffect, useState } from "react"
 import axios from "axios";
 import { Grid } from "@mui/material";
 import PropTypes from 'prop-types';
+import { useNavigate } from "react-router-dom";
+
 
 // import planetsArr from "../planets.json"
 // import vehiclesArr from "../vehicles.json"
@@ -22,7 +24,11 @@ import { planetsArr, vehiclesArr } from "../images"
 export default function Game() {
     const [planets, setPlanets] = useState([]);
     const [vehicles, setVehicles] = useState([]);
-    const [token, setToken] = useState("")
+    const [token, setToken] = useState("");
+    const [planetClicked, setPlanetClicked] = useState(null);
+    const [selectedpair, setSelectedPair] = useState([])
+    const [totalTime, setTotalTime] = useState(planetClicked ? 0 : 0)
+    const navigate = useNavigate()
 
     async function getToken() {
         try {
@@ -76,12 +82,13 @@ export default function Game() {
         }
     }
  console.log(vehicles)
-
+//  console.log("planetID", planetClicked )
+//  console.log(totalTime)
     useEffect(() => {
         async function assembleData() {
             const tokenFromLocalStorage = localStorage.getItem("token") || ""
             setToken(tokenFromLocalStorage)
-            console.log(localStorage.getItem("token"));
+            // console.log(localStorage.getItem("token"));
             if (!token) {
                 const tokenFromAPI = await getToken();
                 setToken(tokenFromAPI)
@@ -116,61 +123,66 @@ export default function Game() {
         assembleData()
     }, [token])
 
+    function handleShipClicked(v){
+      setSelectedPair(prev =>[...prev, [ planetClicked.name,  v.name]])
+      setVehicles(prev=> prev.map(el => {
+        if(el.id === v.id){
+          let totalTime = 0
+          totalTime +=   planetClicked.distance / el.speed
+          setTotalTime(totalTime)
+          console.log(el, "element number", el.total_no)
+          return{...el, "total_no" : el.total_no -1} 
+        }
+        return el  
+      }))
+      setPlanetClicked(null)
+    }
+  
+
+    useEffect(() => {
+      if (selectedpair.length === 4) {
+        console.log("yes");
+        const selectedCombo = JSON.stringify(selectedpair);
+        localStorage.setItem("data", selectedCombo);
+        localStorage.setItem("result", totalTime)
+        setTimeout(()=> {
+          navigate("/result")
+        }, 500)
+        
+      }
+    }, [selectedpair]);
+  
     return (
         <>
-            <h1 className="title">
-                Finding Falcone
-            </h1>
             <main className="game-main">
-                <h3 style={{ textAlign: "center" }}>Select 4 planets to send Vehicles</h3>
+                <h3 style={{ textAlign: "center" }}>Click a planet to send Ship</h3>
+                <h4 style={{ textAlign: "center" }}>Total Time: {totalTime} hours</h4>
                 <Grid container spacing={2} mt={6} >
                  <GameUI 
-                 planets={planets} setPlanets={setPlanets} 
+                 planets={planets} 
+                 setPlanets={setPlanets} 
+                 setPlanetClicked={setPlanetClicked} 
                  vehicles={vehicles} setVehicles={setVehicles}/> 
                 </Grid>
-            </main>
-        </>
-    )
-}
-
-function GameUI({planets, setPlanets, vehicles}){
-    GameUI.propTypes = {
-        planets: PropTypes.array.isRequired,
-        setPlanets: PropTypes.func.isRequired,
-        vehicles: PropTypes.array.isRequired,
-      };
-
-    function handlePlanetClick(id) {
-        setPlanets((prev) => {
-          return prev.map((p) => {
-            if (p.id === id) {
-              return { ...p, isClicked: !p.isClicked };
-            } else {
-              return p;
-            }
-          });
-        });
-      }
-      function handleShipClick(p_id, v_id){
-        console.log(p_id, v_id)
-      }
-    
-      return (
-        <>
-          {planets.map((planet) => (
-            <Grid item xs={12} sm={6} md={4} p={2} className="main-container" key={planet.id}>
-              <div className="planet-container" onClick={() => handlePlanetClick(planet.id)}>
-                <img src={planet.path} className="planet-img" alt="image-from-freepik" />
-                <div className="planet-info-container">
-                  <h4 className="planet-name">{planet.name}</h4>
-                  <p className="planet-info">Distance-{planet.distance}m</p>
-                </div>
-              </div>
-              {planet.isClicked && (
-                <div className="all-v-div">
-                  {vehicles.map((v) => (
-                    <div className="v-div" key={v.id} 
-                    onClick={()=>handleShipClick(v.id, planet.id)}>
+              {
+              planetClicked ? 
+              <div className="modal-container">
+                <div className="modal">
+                <div className="modal-content">
+                  <h3 className="heading-modal">
+                    Select a ship to send on the planet-{planetClicked.name}</h3>
+                    <div className="planet-container-modal">
+                      <img src={planetClicked.path} className="planet-img resize" alt="image-from-freepik" />
+                      <div className= "planet-info-container-modal">
+                        <h4 className="planet-name">{planetClicked.name}</h4>
+                        <p className="planet-info">Distance-{planetClicked.distance}m</p>
+                      </div>
+                    </div>
+                  <div className="all-v-div">
+                {vehicles.map((v) => (
+                    <div className={v.total_no === 0 ? "v-fade v-div" : "v-div"} key={v.id}
+                    onClick={()=> handleShipClicked(v)}
+                    >
                       <img src={v.path} className="v-img" alt="image-from-freepik" />
                       <div className="v-info-container">
                         <h4 className="v-name">{v.name}</h4>
@@ -182,8 +194,57 @@ function GameUI({planets, setPlanets, vehicles}){
                       </div>
                     </div>
                   ))}
+                  </div>
                 </div>
-              )}
+                </div>
+                </div>
+                : ""
+                }
+            </main>
+        </>
+    )
+}
+
+function GameUI({planets, setPlanets,  setPlanetClicked}){
+    GameUI.propTypes = {
+        planets: PropTypes.array.isRequired,
+        setPlanets: PropTypes.func.isRequired,
+        setPlanetClicked: PropTypes.func.isRequired
+      };
+
+    function handlePlanetClick(id) {
+        setPlanets((prev) => {
+          return prev.map((p) => {
+            if (p.id === id) {
+              setPlanetClicked({ ...p, isClicked: !p.isClicked })
+              return { ...p, isClicked: !p.isClicked };
+            } else {
+              return p;
+            }
+          });
+        });
+      }
+      
+    
+      return (
+        <>
+          {planets.map((planet) => (
+            <Grid item xs={12} sm={6} md={4} 
+            className="main-container" 
+             key={planet.id}>
+              <div 
+               className={planet.isClicked ? "planet-container p-fade" : "planet-container"} 
+              onClick={() => handlePlanetClick(planet.id)}>
+                <img 
+                className={planet.isClicked ? "p-img-fade planet-img" : "planet-img"} 
+                src={planet.path}  alt="image-from-freepik" />
+                <div className="planet-info-container">
+                  <div className="planet-info-body">
+                  <h4 className="planet-name">{planet.name}</h4>
+                  <p className="planet-info">Distance-{planet.distance}m</p>
+                  </div>
+                </div>
+              </div>
             </Grid>
           ))}
         </>
