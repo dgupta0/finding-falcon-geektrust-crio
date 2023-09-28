@@ -3,23 +3,7 @@ import axios from "axios";
 import { Grid } from "@mui/material";
 import PropTypes from 'prop-types';
 import { useNavigate } from "react-router-dom";
-
-
-// import planetsArr from "../planets.json"
-// import vehiclesArr from "../vehicles.json"
 import { planetsArr, vehiclesArr } from "../images"
-// import venus from "../assets/venus.png"
-// import saturn from "../assets/saturn.png"
-// import mars from "../assets/mars.png"
-// import mercury from "../assets/mercury.png"
-// import earth from "../assets/earth.png"
-//import neptune from "../assets/neptune.png"
-// import rocket from "../assets/rocket.png"
-// import plane from "../assets/plane.png"
-// import ship from "../assets/ship.png"
-// import ufo from "../assets/ufo.png"
-// console.log("data", vehiclesArr);
-// console.log("data", planetsArr)
 
 export default function Game() {
     const [planets, setPlanets] = useState([]);
@@ -81,7 +65,6 @@ export default function Game() {
             return
         }
     }
- console.log(vehicles)
 //  console.log("planetID", planetClicked )
 //  console.log(totalTime)
     useEffect(() => {
@@ -101,7 +84,8 @@ export default function Game() {
                     {
                         ...planet, id: `planet${i}`,
                         path: planetsArr[i].path,
-                        isClicked: false
+                        isClicked: false,
+                        hasMaxDistance: true
                     }
                 )
             })
@@ -155,6 +139,8 @@ export default function Game() {
         <>
             <main className="game-main">
                 <h3 style={{ textAlign: "center" }}>Click a planet to send Ship</h3>
+                <p style={{ textAlign: "center" }}>Reminder: If no ship has distance more than the planet, then 
+                the planet will become disabled for selection.</p>
                 <h4 style={{ textAlign: "center" }}>Total Time: {totalTime} hours</h4>
                 <Grid container spacing={2} mt={6} >
                  <GameUI 
@@ -179,7 +165,7 @@ export default function Game() {
                     </div>
                   <div className="all-v-div">
                 {vehicles.map((v) => (
-                    <div className={v.total_no === 0 ? "v-fade v-div" : "v-div"} key={v.id}
+                    <div className={v.total_no === 0 || planetClicked.distance > v.max_distance ? "v-fade v-div" : "v-div"} key={v.id}
                     onClick={()=> handleShipClicked(v)}
                     >
                       <img src={v.path} className="v-img" alt="image-from-freepik" />
@@ -204,12 +190,26 @@ export default function Game() {
     )
 }
 
-function GameUI({planets, setPlanets,  setPlanetClicked}){
+function GameUI({planets, setPlanets, vehicles,  setPlanetClicked}){
     GameUI.propTypes = {
         planets: PropTypes.array.isRequired,
+        vehicles: PropTypes.array.isRequired,
         setPlanets: PropTypes.func.isRequired,
         setPlanetClicked: PropTypes.func.isRequired
       };
+
+      useEffect(() => {
+        setPlanets((prev) => {
+          return prev.map((p) => {
+            if (vehicles.some((v) => v.total_no > 0 && v.max_distance >= p.distance)) {
+              return p; 
+            } else {
+              return { ...p, hasMaxDistance: false };
+            }
+          });
+        });
+      }, [vehicles, setPlanets]);
+      
 
     function handlePlanetClick(id) {
         setPlanets((prev) => {
@@ -223,8 +223,7 @@ function GameUI({planets, setPlanets,  setPlanetClicked}){
           });
         });
       }
-      
-    
+       
       return (
         <>
           {planets.map((planet) => (
@@ -232,7 +231,7 @@ function GameUI({planets, setPlanets,  setPlanetClicked}){
             className="main-container" 
              key={planet.id}>
               <div 
-               className={planet.isClicked ? "planet-container p-fade" : "planet-container"} 
+               className={planet.isClicked || !planet.hasMaxDistance? "planet-container p-fade" : "planet-container"} 
               onClick={() => handlePlanetClick(planet.id)}>
                 <img 
                 className={planet.isClicked ? "p-img-fade planet-img" : "planet-img"} 

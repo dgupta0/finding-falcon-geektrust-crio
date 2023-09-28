@@ -33,10 +33,11 @@ export default function Rules() {
                 <img className="gameplay-img" src={gameplay} alt="pic from geektrust" />
             </div>
             <p className="content content-rule">
-                Now in the game, for each planet, select one vehicle
-                according to the description given. Remember, you can choose
-                only 1 planet with 1 vehicle. The moment you pick a planet,
-                your ship will be launched. No backsies allowed!
+                RULES: <br/>
+                For each planet, select one vehicle
+                according to the description given. <u>Remember if no ship has distance more than the planet,
+                you will not be able to send the ship and planet will become disabled.</u>
+                The moment you pick a planet, your ship will be launched. No backsies allowed!
             </p>
             <h3 className="rule msg"> May the force be with you.</h3>
             <button className="start"
