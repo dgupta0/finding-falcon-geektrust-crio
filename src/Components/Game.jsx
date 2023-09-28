@@ -27,7 +27,7 @@ export default function Game() {
     const [token, setToken] = useState("");
     const [planetClicked, setPlanetClicked] = useState(null);
     const [selectedpair, setSelectedPair] = useState([])
-    const [totalTime, setTotalTime] = useState(planetClicked ? 0 : 0)
+    const [totalTime, setTotalTime] = useState(0)
     const navigate = useNavigate()
 
     async function getToken() {
@@ -127,9 +127,8 @@ export default function Game() {
       setSelectedPair(prev =>[...prev, [ planetClicked.name,  v.name]])
       setVehicles(prev=> prev.map(el => {
         if(el.id === v.id){
-          let totalTime = 0
-          totalTime +=   planetClicked.distance / el.speed
-          setTotalTime(totalTime)
+          let currentTime = totalTime + planetClicked.distance / el.speed   
+          setTotalTime(currentTime)
           console.log(el, "element number", el.total_no)
           return{...el, "total_no" : el.total_no -1} 
         }

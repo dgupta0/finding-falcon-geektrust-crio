@@ -5,10 +5,12 @@ import Menu from '@mui/material/Menu';
 import MenuItem from '@mui/material/MenuItem';
 import menu from "../assets/menu.png";
 import { useLocation } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 
 export default function Header(){
  const [anchorEl, setAnchorEl] = React.useState(null);
  const location = useLocation();
+ const navigate = useNavigate()
   const open = Boolean(anchorEl);
   const handleClick = (event) => {
     setAnchorEl(event.currentTarget);
@@ -20,6 +22,8 @@ export default function Header(){
     localStorage.removeItem("data");
     localStorage.removeItem("result");
     window.location.reload();
+    navigate("/game")
+    
     }
     return(
     <header>
