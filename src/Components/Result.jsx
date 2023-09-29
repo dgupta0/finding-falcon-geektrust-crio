@@ -9,7 +9,6 @@ export default function Result(){
 
     useEffect(()=> {
     let pairList = JSON.parse(localStorage.getItem("data"));
-    // localStorage.removeItem("data")
      let planetList = []
      let vehicleList = [];
      for(let i = 0; i <  pairList.length; i++){
@@ -27,8 +26,6 @@ export default function Result(){
             "planet_names" : planetsList,
             "vehicle_names" : vehiclesList
         }
-        console.log("req", bodyReq);
-        // localStorage.removeItem("data")
         try {
             const res = await axios.post("https://findfalcone.geektrust.com/find", bodyReq,
                 {

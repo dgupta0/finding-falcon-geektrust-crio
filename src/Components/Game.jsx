@@ -28,7 +28,6 @@ export default function Game() {
             } else {
                 console.log("status not 200, can't obtain token")
             }
-
         } catch (error) {
             console.log(error);
         }
@@ -43,7 +42,6 @@ export default function Game() {
             } else {
                 console.log("res not 200, cant get planets data")
             }
-
         } catch (error) {
             console.log(error)
         }
@@ -65,13 +63,11 @@ export default function Game() {
             return
         }
     }
-//  console.log("planetID", planetClicked )
-//  console.log(totalTime)
+
     useEffect(() => {
         async function assembleData() {
             const tokenFromLocalStorage = localStorage.getItem("token") || ""
             setToken(tokenFromLocalStorage)
-            // console.log(localStorage.getItem("token"));
             if (!token) {
                 const tokenFromAPI = await getToken();
                 setToken(tokenFromAPI)
@@ -90,7 +86,6 @@ export default function Game() {
                 )
             })
             setPlanets(combinedPlanetsData)
-
             // combining pics vehicle image data with vehicles data api
             const vehiclesData = await getVehicles()
             const combinedVehiclesData = vehiclesData.map((vehicle, i) => {
@@ -106,21 +101,6 @@ export default function Game() {
         }
         assembleData()
     }, [token])
-
-    function handleShipClicked(v){
-      setSelectedPair(prev =>[...prev, [ planetClicked.name,  v.name]])
-      setVehicles(prev=> prev.map(el => {
-        if(el.id === v.id){
-          let currentTime = totalTime + planetClicked.distance / el.speed   
-          setTotalTime(currentTime)
-          console.log(el, "element number", el.total_no)
-          return{...el, "total_no" : el.total_no -1} 
-        }
-        return el  
-      }))
-      setPlanetClicked(null)
-    }
-  
 
     useEffect(() => {
       if (selectedpair.length === 4) {
@@ -145,45 +125,23 @@ export default function Game() {
                  planets={planets} 
                  setPlanets={setPlanets} 
                  setPlanetClicked={setPlanetClicked} 
-                 vehicles={vehicles} setVehicles={setVehicles}/> 
+                 vehicles={vehicles} 
+                 setVehicles={setVehicles}/> 
                 </Grid>
               {
-              planetClicked ? 
-              <div className="modal-container">
-                <div className="modal">
-                <div className="modal-content">
-                  <h3 className="heading-modal">
-                    Select a ship to send on the planet-{planetClicked.name}</h3>
-                    <div className="planet-container-modal">
-                      <img src={planetClicked.path} className="planet-img resize" alt="image-from-freepik" />
-                      <div className= "planet-info-container-modal">
-                        <h4 className="planet-name">{planetClicked.name}</h4>
-                        <p className="planet-info">Distance-{planetClicked.distance}m</p>
-                      </div>
-                    </div>
-                  <div className="all-v-div">
-                {vehicles.map((v) => (
-                    <div className={v.total_no === 0 || planetClicked.distance > v.max_distance ? "v-fade v-div" : "v-div"} key={v.id}
-                    onClick={()=> handleShipClicked(v)}
-                    >
-                      <img src={v.path} className="v-img" alt="image-from-freepik" />
-                      <div className="v-info-container">
-                        <h4 className="v-name">{v.name}</h4>
-                        <p className="v-info">
-                          Max-Distance= {v.max_distance}m<br />
-                          Units= {v.total_no} <br />
-                          speed= {v.speed}m/h
-                          {planetClicked.distance > v.max_distance && <p>!Ship distance is less</p>}
-                        </p>
-                      </div>
-                    </div>
-                  ))}
-                  </div>
-                </div>
-                </div>
-                </div>
-                : ""
-                }
+               planetClicked ? 
+                <ModalUI
+                setPlanetClicked={setPlanetClicked}
+                setVehicles={setVehicles} 
+                vehicles={vehicles} 
+                setSelectedPair ={setSelectedPair}
+                planetClicked={planetClicked}
+                setTotalTime={setTotalTime}
+                totalTime={totalTime}
+                />
+                :
+                ""
+              }
             </main>
         </>
     )
@@ -247,4 +205,67 @@ function GameUI({planets, setPlanets, vehicles,  setPlanetClicked}){
           ))}
         </>
       );
+}
+
+function ModalUI({setPlanetClicked, setVehicles, setSelectedPair, planetClicked, vehicles, setTotalTime, totalTime}){
+  ModalUI.propTypes = {
+    vehicles: PropTypes.array.isRequired,
+    setPlanets: PropTypes.func.isRequired,
+    setPlanetClicked: PropTypes.func.isRequired,
+    setSelectedPair: PropTypes.func.isRequired,
+    planetClicked: PropTypes.object.isRequired,
+    setTotalTime:  PropTypes.func.isRequired,
+    setVehicles: PropTypes.func.isRequired,
+    totalTime: PropTypes.number.isRequired
+  }
+  
+  function handleShipClicked(v){
+    setSelectedPair(prev =>[...prev, [ planetClicked.name,  v.name]])
+    setVehicles(prev=> prev.map(el => {
+      if(el.id === v.id){
+        let currentTime = totalTime + planetClicked.distance / el.speed   
+        setTotalTime(currentTime)
+        console.log(el, "element number", el.total_no)
+        return{...el, "total_no" : el.total_no -1} 
+      }
+      return el  
+    }))
+    setPlanetClicked(null)
+  }
+  return(
+    <div className="modal-container">
+      <div className="modal">
+        <div className="modal-content">
+          <h3 className="heading-modal">
+            Select a ship to send on the planet-{planetClicked.name}</h3>
+            <div className="planet-container-modal">
+              <img src={planetClicked.path} className="planet-img resize" alt="image-from-freepik" />
+              <div className= "planet-info-container-modal">
+                <h4 className="planet-name">{planetClicked.name}</h4>
+                <p className="planet-info">Distance-{planetClicked.distance}m</p>
+              </div>
+            </div>
+          <div className="all-v-div">
+            {vehicles.map((v) => (
+                <div className={v.total_no === 0 || planetClicked.distance > v.max_distance ? "v-fade v-div" : "v-div"} key={v.id}
+                onClick={()=> handleShipClicked(v)}
+                >
+                  <img src={v.path} className="v-img" alt="image-from-freepik" />
+                  <div className="v-info-container">
+                      <h4 className="v-name">{v.name}</h4>
+                      <p className="v-info">
+                        Max-Distance= {v.max_distance}m<br />
+                        Units= {v.total_no} <br />
+                        speed= {v.speed}m/h
+                        {planetClicked.distance > v.max_distance && <p>!Ship distance is less</p>}
+                      </p>
+                  </div>
+                </div>
+              ))}
+          </div>
+        </div>
+      </div>
+    </div>
+  )
+
 }
