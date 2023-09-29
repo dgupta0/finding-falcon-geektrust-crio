@@ -8,7 +8,7 @@ Currently, two official plugins are available:
 - [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
 
 
-# finding-falcon-geektrust-crio + Setting up Project on local machine
+# finding-falcon-geektrust-crio Project 
 
 ##### Running the project with vite
 
