@@ -14,7 +14,7 @@ Currently, two official plugins are available:
 
 1. Open your teminal
 2. `cd` into your projects directory like `Desktop` where you want store the project.
-3. Clone this repository to your local machine `git@github.com:dgupta0/finding-falcon-geektrust-crio.git`
+3. Clone this repository to your local machine using- `git@github.com:dgupta0/finding-falcon-geektrust-crio.git`
 4. Change to the project directory `cd finding-falcon-geektrust-crio`
 5. Make sure you are in the projects director.
 6. Run `npm install`
