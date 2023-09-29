@@ -33,6 +33,7 @@ footer p{
   color: #f29018;
   font-size: 2.5rem;
 }
+
 nav{
   display: flex;
   gap: 0.5rem;
@@ -40,9 +41,7 @@ nav{
   margin-left: auto;
  
 }
-.smaller-nav{
-  display: none;
-}
+
 .nav-link{
   color: black;
   font-size: 1.25rem;
@@ -360,10 +359,15 @@ background-color: rgba(242, 144, 24, 0.5)
   .modal{
     height: 100%;
   }
-  .larger-nav{
-    display: none;
+   header{
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
   }
-  .smaller-nav{
-    display: block;
+  nav{
+    margin: auto;
+    padding-bottom: 1rem;
   }
+ 
 }

@@ -1,5 +1,4 @@
 import { useEffect, useState } from "react"
-import axios from "axios";
 import { Grid } from "@mui/material";
 import PropTypes from 'prop-types';
 import { useNavigate } from "react-router-dom";
@@ -15,54 +14,57 @@ export default function Game() {
     const navigate = useNavigate()
 
     async function getToken() {
-        try {
-            const res = await axios.post("https://findfalcone.geektrust.com/token", null, {
-                headers: {
-                    'Accept': 'application/json'
-                }
-            })
-            if (res.status === 200) {
-                const token = res.data.token;
-                localStorage.setItem("token", token)
-                return token
-            } else {
-                console.log("status not 200, can't obtain token")
-            }
-        } catch (error) {
-            console.log(error);
+      try {
+        const response = await fetch("https://findfalcone.geektrust.com/token", {
+          method: 'POST',
+          headers: {
+            'Accept': 'application/json',
+          },
+        });
+        
+        if (response.status === 200) {
+          const data = await response.json();
+          const token = data.token;
+          localStorage.setItem("token", token);
+          return token;
+        } else {
+          console.log("Status not 200, can't obtain token");
         }
-
+      } catch (error) {
+        console.log(error);
+      }
     }
+    
     async function getPlanets() {
-        try {
-            const res = await axios.get("https://findfalcone.geektrust.com/planets");
-            if (res.status === 200) {
-                const data = res.data;
-                return data;
-            } else {
-                console.log("res not 200, cant get planets data")
-            }
-        } catch (error) {
-            console.log(error)
+      try {
+        const response = await fetch("https://findfalcone.geektrust.com/planets");
+        if (response.status === 200) {
+          const data = await response.json();
+          return data;
+        } else {
+          console.log("Response not 200, can't get planets data");
         }
-
+      } catch (error) {
+        console.log(error);
+      }
     }
+    
     async function getVehicles() {
-        try {
-            const res = await axios.get("https://findfalcone.geektrust.com/vehicles");
-            if (res.status === 200) {
-                const data = res.data;
-                return data
-            } else {
-                console.log("res not 200, cant get vehicles data")
-                return
-            }
-
-        } catch (error) {
-            console.log(error)
-            return
+      try {
+        const response = await fetch("https://findfalcone.geektrust.com/vehicles");
+        if (response.status === 200) {
+          const data = await response.json();
+          return data;
+        } else {
+          console.log("Response not 200, can't get vehicles data");
+          return;
         }
+      } catch (error) {
+        console.log(error);
+        return;
+      }
     }
+    
 
     useEffect(() => {
         async function assembleData() {
@@ -107,7 +109,7 @@ export default function Game() {
         console.log("yes");
         const selectedCombo = JSON.stringify(selectedpair);
         localStorage.setItem("data", selectedCombo);
-        localStorage.setItem("result", totalTime)
+        localStorage.setItem("totalTime", totalTime)
         setTimeout(()=> {
           navigate("/result")
         }, 500)

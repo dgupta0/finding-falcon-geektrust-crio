@@ -1,10 +1,9 @@
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
-import axios from "axios";
 
 export default function Result(){
     const [result, setResult] = useState(null);
-    const hours = localStorage.getItem("result");
+    const hours = localStorage.getItem("totalTime");
     const navigate = useNavigate();
 
     useEffect(()=> {
@@ -19,31 +18,39 @@ export default function Result(){
      getResult(planetList, vehicleList)
     }, [])
 
-    async function getResult(planetsList, vehiclesList){
-        console.log(planetsList, vehiclesList)
-        let bodyReq = {
-            "token" : localStorage.getItem("token"),
-            "planet_names" : planetsList,
-            "vehicle_names" : vehiclesList
-        }
+    async function getResult(planetsList, vehiclesList) {
+        console.log(planetsList, vehiclesList);
+        const bodyReq = {
+          token: localStorage.getItem("token"),
+          planet_names: planetsList,
+          vehicle_names: vehiclesList,
+        };
+      
         try {
-            const res = await axios.post("https://findfalcone.geektrust.com/find", bodyReq,
-                {
-                    headers: {
-                    Accept : "application/json",
-                    "Content-Type": "application/json"
-                    }
-               })
-            const data = res.data 
-            console.log(data.status)   
-            setResult(data)
+          const response = await fetch("https://findfalcone.geektrust.com/find", {
+            method: 'POST',
+            headers: {
+              'Accept': 'application/json',
+              'Content-Type': 'application/json',
+            },
+            body: JSON.stringify(bodyReq),
+          });
+      
+          if (response.status === 200) {
+            const data = await response.json();
+            console.log(data.status);
+            setResult(data);
+          } else {
+            console.log("Response status is not 200");
+          }
         } catch (error) {
-            console.log(error)
+          console.log(error);
         }
-    }
+      }
+      
     function handleReset(){
         localStorage.removeItem("data");
-        localStorage.removeItem("result")
+        localStorage.removeItem("totalTime")
         navigate("/game");
 
     }

@@ -2,7 +2,9 @@
 import queen from "../assets/falcone.png";
 import gameplay from "../assets/game.png"
 import { useNavigate } from "react-router-dom";
+
 export default function Rules() {
+    localStorage.clear()
     const navigate = useNavigate()
     return (
         <main>
