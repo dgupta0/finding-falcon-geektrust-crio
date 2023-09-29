@@ -290,6 +290,11 @@ background-color: rgba(242, 144, 24, 0.5)
   line-height: 1.3rem;
   
 }
+.no-v-msg{
+   text-align: center;
+   margin-top: -2rem;
+   font-size: 0.75rem;
+}
 .result-container{
  display: flex;
  height:  80vh;

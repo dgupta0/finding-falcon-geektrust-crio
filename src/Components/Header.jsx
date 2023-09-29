@@ -22,8 +22,8 @@ export default function Header(){
     localStorage.removeItem("data");
     localStorage.removeItem("result");
     location.pathname === "/game" ? window.location.reload() :  navigate("/game")
+   }
    
-    }
     
     return(
     <header>
@@ -66,15 +66,18 @@ export default function Header(){
         }}
       >
           {location.pathname === "/" ?
-          <MenuItem onClick={handleClose}>
+          <>
+          <MenuItem key="game" onClick={handleClose}>
           <Link onClick={handleHeaderReset} className="nav-link" to="game">Play Now</Link>
           </MenuItem>
+          </>
         :
+        
         <>
-        <MenuItem onClick={handleClose}>
+        <MenuItem key="reset" onClick={handleClose}>
         <Link onClick={handleHeaderReset} className="nav-link" to="/game">Reset</Link>
         </MenuItem>
-        <MenuItem onClick={handleClose}>
+        <MenuItem key="rules" onClick={handleClose}>
         <Link className="nav-link" to="/">Rules</Link>
         </MenuItem>
         </>

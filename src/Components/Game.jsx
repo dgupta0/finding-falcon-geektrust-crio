@@ -139,8 +139,6 @@ export default function Game() {
         <>
             <main className="game-main">
                 <h3 style={{ textAlign: "center" }}>Click a planet to send Ship</h3>
-                <p style={{ textAlign: "center" }}>Reminder: If no ship has distance more than the planet, then 
-                the planet will become disabled for selection.</p>
                 <h4 style={{ textAlign: "center" }}>Total Time: {totalTime} hours</h4>
                 <Grid container spacing={2} mt={6} >
                  <GameUI 
@@ -175,6 +173,7 @@ export default function Game() {
                           Max-Distance= {v.max_distance}m<br />
                           Units= {v.total_no} <br />
                           speed= {v.speed}m/h
+                          {planetClicked.distance > v.max_distance && <p>!Ship distance is less</p>}
                         </p>
                       </div>
                     </div>
@@ -241,8 +240,9 @@ function GameUI({planets, setPlanets, vehicles,  setPlanetClicked}){
                   <h4 className="planet-name">{planet.name}</h4>
                   <p className="planet-info">Distance-{planet.distance}m</p>
                   </div>
-                </div>
+                </div>       
               </div>
+              {!planet.hasMaxDistance && !planet.isClicked && <p className="no-v-msg">!No ship available to cover the distance</p>}
             </Grid>
           ))}
         </>
