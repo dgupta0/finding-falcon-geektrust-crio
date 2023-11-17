@@ -9,7 +9,9 @@ export default function Header() {
   function handleHeaderReset() {
     localStorage.removeItem("data");
     localStorage.removeItem("result");
-    navigate("/game");
+    location.pathname === "/game"
+      ? window.location.reload()
+      : navigate("/game");
   }
 
   return (
